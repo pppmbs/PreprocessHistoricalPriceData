@@ -113,6 +113,11 @@ namespace PreprocessHistoricalPriceData
             SingleDoubleSerie moSerie = mo.Calculate();
             double?[] moArry = moSerie.Values.ToArray();
 
+            VROC vroc = new VROC(25);
+            vroc.LoadOhlcList(barRecords);
+            SingleDoubleSerie vrocSerie = vroc.Calculate();
+            double?[] vrocArry = vrocSerie.Values.ToArray();
+
             int index = 0;
             foreach (BarRecord bar in barRecords)
             {
@@ -129,6 +134,7 @@ namespace PreprocessHistoricalPriceData
                 bar.ATR_TrueHigh = atrHighArry[index].ToString();
                 bar.ATR_TrueLow = atrLowArry[index].ToString();
                 bar.Momemtum = moArry[index].ToString();
+                bar.VROC = vrocArry[index].ToString();
                 index++;
             }
 
@@ -151,6 +157,7 @@ namespace PreprocessHistoricalPriceData
             double lastADXPositive = Convert.ToDouble(barRecords.First().ADX_DIPositive);
             double lastADXNegative = Convert.ToDouble(barRecords.First().ADX_DINegative);
             double lastMomentum = Convert.ToDouble(barRecords.First().Momemtum);
+            double lastVROC = Convert.ToDouble(barRecords.First().VROC);
 
             foreach (BarRecord bar in barRecords)
             {
@@ -218,6 +225,11 @@ namespace PreprocessHistoricalPriceData
                     bar.Momemtum = lastMomentum.ToString();
                 else
                     lastMomentum = Convert.ToDouble(bar.Momemtum);
+
+                if (string.IsNullOrEmpty(bar.VROC))
+                    bar.VROC = lastVROC.ToString();
+                else
+                    lastVROC = Convert.ToDouble(bar.VROC);
             }
             barRecords.Reverse();
         }
@@ -337,7 +349,7 @@ namespace PreprocessHistoricalPriceData
                 {
                     using (var sr = new StreamReader(inFile))
                     {
-                        String outFile = "500-ticks\\" + Path.GetFileNameWithoutExtension(inFile) + "-500-bar.csv";
+                        String outFile = "2000-ticks\\" + Path.GetFileNameWithoutExtension(inFile) + "-2000-bar.csv";
                         using (var sw = new StreamWriter(outFile))
                         {
                             var reader = new CsvReader(sr, CultureInfo.InvariantCulture);
