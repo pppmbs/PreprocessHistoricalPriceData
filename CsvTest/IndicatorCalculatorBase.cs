@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Globalization;
 
-namespace AiTrader
+namespace PreprocessHistoricalPriceData
 {
     public abstract class IndicatorCalculatorBase<T>
     {

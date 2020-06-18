@@ -7,11 +7,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace AiTrader
+namespace PreprocessHistoricalPriceData
 {
     static class Constants
     {
-        public const int TickCount = 2000; // 2000 ticks per bar
+        public const int TickCount = 500; // 2000 ticks per bar
         public const int barsLookAhear = 5; // look ahead 5 bars
         public const int minBarRecords = 50; //anything less will be meaningless
     }
@@ -337,7 +337,7 @@ namespace AiTrader
                 {
                     using (var sr = new StreamReader(inFile))
                     {
-                        String outFile = Path.GetFileNameWithoutExtension(inFile) + "-bar.csv";
+                        String outFile = "500-ticks\\" + Path.GetFileNameWithoutExtension(inFile) + "-500-bar.csv";
                         using (var sw = new StreamWriter(outFile))
                         {
                             var reader = new CsvReader(sr, CultureInfo.InvariantCulture);
