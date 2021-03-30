@@ -3,8 +3,8 @@
     "PreprocessHistoricalPriceData": {
       "commandName": "Executable",
       "executablePath": "C:\\Users\\pppmb\\source\\repos\\PreprocessHistoricalPriceData\\CsvTest\\bin\\Debug\\netcoreapp3.1\\PreprocessHistoricalPriceData.exe",
-      "commandLineArgs": "ESH09TK.CSV",
-      "workingDirectory": "C:\\Users\\pppmb\\Bill Document\\ES tick by tick 2003-2020\\2009\\ES03-09"
+      "commandLineArgs": "ESM03TK.CSV",
+      "workingDirectory": "C:\\Users\\pppmb\\Bill Document\\ES tick by tick 2003-2020 (Purchased)\\2003\\ES06-03"
     }
   }
 }
