@@ -11,10 +11,12 @@ namespace PreprocessHistoricalPriceData
 {
     static class Constants
     {
-        public const int TickCount = 500; // 2000 ticks per bar
+        public const int TickCount = 2000; // ticks per bar
         public const int barsLookAhear = 5; // look ahead 5 bars
-        public const int minBarRecords = 50; //anything less will be meaningless
-        public const int slidingWindow = 200; // sliding window to create multiple variations of the 2000 ticks bar records, 200 ticks, i.e. expended the data size by 10x
+        public const int minBarRecords = 50; //anything less Some indicators, e.g. SMA50, MACD, will not have any value
+        //public const int slidingWindow = TickCount / 10; // sliding window to create multiple variations of the 2000 ticks bar records, i.e. expended the data size by 10x
+        public const int slidingWindow = 97; // largest prime <100 sliding window to create multiple variations of the 2000 ticks bar records, i.e. expended the data size by 10x
+        public const int slidingTotal = 10; // total number of sliding, i.e. # of augmented files generated
     }
 
     class Strategy
@@ -160,6 +162,7 @@ namespace PreprocessHistoricalPriceData
             barRecords.Reverse();
             double lastSMA9 = Convert.ToDouble(barRecords.First().SMA9);
             double lastSM20 = Convert.ToDouble(barRecords.First().SMA20);
+            // for less than 50 bars SMA50 will not have value, use SMA20 instead
             double lastSM50 = Convert.ToDouble(barRecords.First().SMA50);
             double lastMACD = Convert.ToDouble(barRecords.First().MACD_DIFF);
             double lastRSI = Convert.ToDouble(barRecords.First().RSI);
@@ -380,12 +383,12 @@ namespace PreprocessHistoricalPriceData
                         //CSVReader will now read the whole file into an enumerable
                         IEnumerable records = reader.GetRecords<DataRecord>().ToList();
 
-                        for (int slidingNum = 0; slidingNum < 10; slidingNum++)
+                        for (int slidingNum = 0; slidingNum < Constants.slidingTotal; slidingNum++)
                         {
                             //Covert ticks into bar records
                             List<BarRecord> barRecords = new List<BarRecord>();
 
-                            String outFile = "2000-ticks\\" + Path.GetFileNameWithoutExtension(inFile) + "-2000-bar-" + slidingNum.ToString() + ".csv";
+                            String outFile = Constants.TickCount + "-ticks-more\\" + Path.GetFileNameWithoutExtension(inFile) + "-" + Constants.TickCount + "-bar-" + slidingNum.ToString() + ".csv";
                             using (var sw = new StreamWriter(outFile))
                             {
                                 var writer = new CsvWriter(sw, CultureInfo.InvariantCulture);
